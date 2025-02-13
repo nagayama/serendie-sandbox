@@ -5,17 +5,20 @@ function App() {
   return (
     <div
       className={css({
-        width: "sd.reference.dimension.breakpoint.small",
-        backgroundColor: "sd.reference.color.scale.gray.200",
+        width: "sd.reference.dimension.breakpoint.medium",
+        backgroundColor: "sd.reference.color.scale.gray.100",
       })}
     >
-      <Button
+      sd.reference.dimension.breakpoint.medium
+      <div
         className={css({
-          mt: "sd.system.dimension.spacing.fourExtraLarge",
+          width: "sd.reference.dimension.breakpoint.small",
+          backgroundColor: "sd.reference.color.scale.gray.200",
         })}
       >
-        Click me
-      </Button>
+        sd.reference.dimension.breakpoint.small
+      </div>
+      <Button>Click me</Button>
     </div>
   );
 }

@@ -108,7 +108,7 @@ export const VictoryBarChart = () => {
       </h2>
       {/* VictoryChart: チャート全体のコンテナ */}
       <VictoryChart
-        domainPadding={20} // バーの端がチャートの端に接触しないようにパディングを設定
+        domainPadding={40} // バーの端がチャートの端に接触しないようにパディングを設定
         theme={SerendieTheme} // カスタムテーマを適用
         width={500}
         height={300}
@@ -135,7 +135,6 @@ export const VictoryBarChart = () => {
         />
         {/* VictoryGroup: 複数の棒グラフをグループ化 */}
         <VictoryGroup offset={20}>
-          {" "}
           {/* offset: グループ内の棒の間隔 */}
           {/* VictoryBar: 製品Aの棒グラフ */}
           <VictoryBar

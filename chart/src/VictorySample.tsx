@@ -3,7 +3,6 @@ import {
   VictoryBar,
   VictoryChart,
   VictoryAxis,
-  VictoryTheme,
   VictoryGroup,
   VictoryLegend,
   VictoryPie,
@@ -11,6 +10,7 @@ import {
 } from "victory";
 import { token } from "@serendie/ui/tokens";
 import { css } from "@serendie/ui/css";
+import SerendieTheme from "./VictoryTheme";
 
 // サンプルデータ
 const data = [
@@ -71,7 +71,7 @@ export const VictoryBarChart = () => {
       </h2>
       <VictoryChart
         domainPadding={20}
-        theme={VictoryTheme.material}
+        theme={SerendieTheme}
         width={500}
         height={300}
       >
@@ -80,57 +80,14 @@ export const VictoryBarChart = () => {
           y={10}
           orientation="horizontal"
           gutter={20}
-          style={{
-            labels: {
-              fill: token("colors.sd.system.color.component.onSurface"),
-            },
-          }}
-          data={[
-            {
-              name: "製品A",
-              symbol: {
-                fill: token("colors.sd.system.color.impression.primary"),
-              },
-            },
-            {
-              name: "製品B",
-              symbol: {
-                fill: token("colors.sd.system.color.impression.secondary"),
-              },
-            },
-          ]}
+          data={[{ name: "製品A" }, { name: "製品B" }]}
         />
         <VictoryAxis
           tickValues={[1, 2, 3, 4]}
           tickFormat={["Q1", "Q2", "Q3", "Q4"]}
-          style={{
-            axis: {
-              stroke: token("colors.sd.system.color.component.outline"),
-            },
-            tickLabels: {
-              fill: token("colors.sd.system.color.component.onSurface"),
-            },
-          }}
         />
-        <VictoryAxis
-          dependentAxis
-          tickFormat={(x) => `¥${x / 1000}k`}
-          style={{
-            axis: {
-              stroke: token("colors.sd.system.color.component.outline"),
-            },
-            tickLabels: {
-              fill: token("colors.sd.system.color.component.onSurface"),
-            },
-          }}
-        />
-        <VictoryGroup
-          offset={20}
-          colorScale={[
-            token("colors.sd.system.color.impression.primary"),
-            token("colors.sd.system.color.impression.secondary"),
-          ]}
-        >
+        <VictoryAxis dependentAxis tickFormat={(x) => `¥${x / 1000}k`} />
+        <VictoryGroup offset={20}>
           <VictoryBar
             data={productAData}
             animate={{
@@ -178,18 +135,9 @@ export const VictoryPieChart = () => {
         data={pieData}
         width={400}
         height={400}
-        colorScale={[
-          token("colors.sd.system.color.impression.primary"),
-          token("colors.sd.system.color.impression.secondary"),
-        ]}
+        theme={SerendieTheme}
         innerRadius={70}
         labelRadius={({ innerRadius }) => (innerRadius as number) + 30}
-        style={{
-          labels: {
-            fill: token("colors.sd.system.color.component.onSurface"),
-            fontSize: 14,
-          },
-        }}
         animate={{
           duration: 2000,
           onLoad: { duration: 1000 },

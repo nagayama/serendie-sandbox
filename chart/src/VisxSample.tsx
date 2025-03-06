@@ -9,6 +9,7 @@ import { css } from "@serendie/ui/css";
 import { Pie } from "@visx/shape";
 import { Text } from "@visx/text";
 import { GradientPinkBlue } from "@visx/gradient";
+import { VisxThemeProvider, useVisxTheme } from "./VisxTheme";
 
 // サンプルデータ
 const data = [
@@ -44,64 +45,49 @@ const pieData = [
 const getQuarter = (d: (typeof data)[0]) => d.quarter;
 const keys = ["productA", "productB"];
 
-// 棒グラフの寸法
-const width = 500;
-const height = 300;
-const margin = { top: 40, right: 40, bottom: 50, left: 60 };
+/**
+ * VisxBarChartInner - テーマを使用する棒グラフの内部コンポーネント
+ * useVisxThemeフックを使用してテーマにアクセスします
+ */
+const VisxBarChartInner = () => {
+  // テーマからスタイルを取得
+  const theme = useVisxTheme();
 
-// グラフ領域の計算
-const xMax = width - margin.left - margin.right;
-const yMax = height - margin.top - margin.bottom;
+  // グラフの寸法
+  const width = theme.chart.width;
+  const height = theme.chart.height;
+  const margin = theme.chart.margin;
 
-// スケールの設定
-const quarterScale = scaleBand<string>({
-  domain: data.map(getQuarter),
-  padding: 0.2,
-});
+  // グラフ領域の計算
+  const xMax = width - margin.left - margin.right;
+  const yMax = height - margin.top - margin.bottom;
 
-const productScale = scaleBand<string>({
-  domain: keys,
-  padding: 0.1,
-});
+  // スケールの設定
+  const quarterScale = scaleBand<string>({
+    domain: data.map(getQuarter),
+    padding: 0.2,
+  });
 
-const valueScale = scaleLinear<number>({
-  domain: [0, 20000],
-});
+  const productScale = scaleBand<string>({
+    domain: keys,
+    padding: 0.1,
+  });
 
-const colorScale = scaleOrdinal<string, string>({
-  domain: keys,
-  range: [
-    token("colors.sd.system.color.impression.primary"),
-    token("colors.sd.system.color.impression.secondary"),
-  ],
-});
+  const valueScale = scaleLinear<number>({
+    domain: [0, 20000],
+  });
 
-// レイアウトの設定
-quarterScale.rangeRound([0, xMax]);
-productScale.rangeRound([0, quarterScale.bandwidth()]);
-valueScale.range([yMax, 0]);
+  // テーマの色を使用してカラースケールを設定
+  const colorScale = scaleOrdinal<string, string>({
+    domain: keys,
+    range: [theme.colors.primary, theme.colors.secondary],
+  });
 
-// 円グラフのアクセサ関数
-const getPieValue = (d: (typeof pieData)[0]) => d.value;
-const getPieLabel = (d: (typeof pieData)[0]) => d.label;
+  // レイアウトの設定
+  quarterScale.rangeRound([0, xMax]);
+  productScale.rangeRound([0, quarterScale.bandwidth()]);
+  valueScale.range([yMax, 0]);
 
-// 円グラフの寸法
-const pieWidth = 400;
-const pieHeight = 400;
-const radius = Math.min(pieWidth, pieHeight) / 2;
-const centerX = pieWidth / 2;
-const centerY = pieHeight / 2;
-
-// 円グラフの色
-const pieColorScale = scaleOrdinal<string, string>({
-  domain: pieData.map(getPieLabel),
-  range: [
-    token("colors.sd.system.color.impression.primary"),
-    token("colors.sd.system.color.impression.secondary"),
-  ],
-});
-
-export const VisxBarChart = () => {
   return (
     <div
       className={css({
@@ -109,7 +95,7 @@ export const VisxBarChart = () => {
         flexDirection: "column",
         alignItems: "center",
         padding: token("spacing.sd.system.dimension.spacing.large"),
-        backgroundColor: token("colors.sd.system.color.component.surface"),
+        backgroundColor: theme.colors.background,
         borderRadius: token("radii.sd.system.dimension.radius.medium"),
         boxShadow: token("shadows.sd.system.elevation.shadow.level1"),
         maxWidth: "600px",
@@ -118,7 +104,7 @@ export const VisxBarChart = () => {
     >
       <h2
         className={css({
-          color: token("colors.sd.system.color.impression.primary"),
+          color: theme.colors.primary,
           marginBottom: token("spacing.sd.system.dimension.spacing.medium"),
         })}
       >
@@ -139,11 +125,11 @@ export const VisxBarChart = () => {
           <AxisLeft
             scale={valueScale}
             tickFormat={(value: NumberValue) => `¥${value.valueOf() / 1000}k`}
-            stroke={token("colors.sd.system.color.component.outline")}
-            tickStroke={token("colors.sd.system.color.component.outline")}
+            stroke={theme.colors.axis}
+            tickStroke={theme.colors.axis}
             tickLabelProps={() => ({
-              fill: token("colors.sd.system.color.component.onSurface"),
-              fontSize: 12,
+              fill: theme.colors.text,
+              fontSize: theme.typography.fontSize.medium,
               textAnchor: "end",
               dy: "0.33em",
             })}
@@ -151,11 +137,11 @@ export const VisxBarChart = () => {
           <AxisBottom
             top={yMax}
             scale={quarterScale}
-            stroke={token("colors.sd.system.color.component.outline")}
-            tickStroke={token("colors.sd.system.color.component.outline")}
+            stroke={theme.colors.axis}
+            tickStroke={theme.colors.axis}
             tickLabelProps={() => ({
-              fill: token("colors.sd.system.color.component.onSurface"),
-              fontSize: 12,
+              fill: theme.colors.text,
+              fontSize: theme.typography.fontSize.medium,
               textAnchor: "middle",
             })}
           />
@@ -196,7 +182,31 @@ export const VisxBarChart = () => {
   );
 };
 
-export const VisxPieChart = () => {
+/**
+ * VisxPieChartInner - テーマを使用する円グラフの内部コンポーネント
+ * useVisxThemeフックを使用してテーマにアクセスします
+ */
+const VisxPieChartInner = () => {
+  // テーマからスタイルを取得
+  const theme = useVisxTheme();
+
+  // 円グラフのアクセサ関数
+  const getPieValue = (d: (typeof pieData)[0]) => d.value;
+  const getPieLabel = (d: (typeof pieData)[0]) => d.label;
+
+  // 円グラフの寸法
+  const pieWidth = 400;
+  const pieHeight = 400;
+  const radius = Math.min(pieWidth, pieHeight) / 2;
+  const centerX = pieWidth / 2;
+  const centerY = pieHeight / 2;
+
+  // テーマの色を使用して円グラフの色を設定
+  const pieColorScale = scaleOrdinal<string, string>({
+    domain: pieData.map(getPieLabel),
+    range: [theme.colors.primary, theme.colors.secondary],
+  });
+
   return (
     <div
       className={css({
@@ -204,7 +214,7 @@ export const VisxPieChart = () => {
         flexDirection: "column",
         alignItems: "center",
         padding: token("spacing.sd.system.dimension.spacing.large"),
-        backgroundColor: token("colors.sd.system.color.component.surface"),
+        backgroundColor: theme.colors.background,
         borderRadius: token("radii.sd.system.dimension.radius.medium"),
         boxShadow: token("shadows.sd.system.elevation.shadow.level1"),
         maxWidth: "600px",
@@ -213,7 +223,7 @@ export const VisxPieChart = () => {
     >
       <h2
         className={css({
-          color: token("colors.sd.system.color.impression.primary"),
+          color: theme.colors.primary,
           marginBottom: token("spacing.sd.system.dimension.spacing.medium"),
         })}
       >
@@ -247,7 +257,7 @@ export const VisxPieChart = () => {
                         fill={token(
                           "colors.sd.system.color.component.inverseSurface"
                         )}
-                        fontSize={14}
+                        fontSize={theme.typography.fontSize.medium}
                         textAnchor="middle"
                         pointerEvents="none"
                       >
@@ -298,19 +308,46 @@ export const VisxPieChart = () => {
   );
 };
 
+/**
+ * VisxBarChart - テーマプロバイダーでラップした棒グラフコンポーネント
+ * このコンポーネントは外部から使用される際にテーマを提供します
+ */
+export const VisxBarChart = () => {
+  return (
+    <VisxThemeProvider>
+      <VisxBarChartInner />
+    </VisxThemeProvider>
+  );
+};
+
+/**
+ * VisxPieChart - テーマプロバイダーでラップした円グラフコンポーネント
+ * このコンポーネントは外部から使用される際にテーマを提供します
+ */
+export const VisxPieChart = () => {
+  return (
+    <VisxThemeProvider>
+      <VisxPieChartInner />
+    </VisxThemeProvider>
+  );
+};
+
 // デフォルトエクスポートは棒グラフと円グラフの両方を含むコンポーネント
+// 共通のテーマプロバイダーでラップすることで、両方のグラフで同じテーマを共有できます
 const VisxSample = () => {
   return (
-    <div
-      className={css({
-        display: "flex",
-        flexDirection: "column",
-        gap: token("spacing.sd.system.dimension.spacing.extraLarge"),
-      })}
-    >
-      <VisxBarChart />
-      <VisxPieChart />
-    </div>
+    <VisxThemeProvider>
+      <div
+        className={css({
+          display: "flex",
+          flexDirection: "column",
+          gap: token("spacing.sd.system.dimension.spacing.extraLarge"),
+        })}
+      >
+        <VisxBarChartInner />
+        <VisxPieChartInner />
+      </div>
+    </VisxThemeProvider>
   );
 };
 

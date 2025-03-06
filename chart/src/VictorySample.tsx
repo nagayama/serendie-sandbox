@@ -85,24 +85,6 @@ const pieData = [
  * 一貫したスタイルを実現しています。
  */
 export const VictoryBarChart = () => {
-  // 凡例アイテムの作成
-  const legendItems: LegendItem[] = [
-    {
-      key: "productA",
-      label: "製品A",
-      color:
-        SerendieTheme.group?.colorScale?.[0] ||
-        token("colors.sd.system.color.impression.primary"),
-    },
-    {
-      key: "productB",
-      label: "製品B",
-      color:
-        SerendieTheme.group?.colorScale?.[1] ||
-        token("colors.sd.system.color.impression.secondary"),
-    },
-  ];
-
   return (
     <div
       className={css({
@@ -174,9 +156,6 @@ export const VictoryBarChart = () => {
           />
         </VictoryGroup>
       </VictoryChart>
-
-      {/* 共通凡例コンポーネントを使用 */}
-      <ChartLegend items={legendItems} />
     </div>
   );
 };

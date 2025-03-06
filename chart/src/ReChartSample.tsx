@@ -194,9 +194,6 @@ const RechartBarChartInner = () => {
           />
         </BarChart>
       </ResponsiveContainer>
-
-      {/* 共通凡例コンポーネントを使用 */}
-      <ChartLegend items={legendItems} />
     </div>
   );
 };

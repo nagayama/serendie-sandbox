@@ -1,4 +1,3 @@
-import React from "react";
 import { BarGroup } from "@visx/shape";
 import { Group } from "@visx/group";
 import { AxisBottom, AxisLeft } from "@visx/axis";
@@ -131,10 +130,10 @@ const VisxBarChartInner = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: token("spacing.sd.system.dimension.spacing.large"),
+        padding: "sd.system.dimension.spacing.large",
         backgroundColor: theme.colors.background,
-        borderRadius: token("radii.sd.system.dimension.radius.medium"),
-        boxShadow: token("shadows.sd.system.elevation.shadow.level1"),
+        borderRadius: "sd.system.dimension.radius.medium",
+        boxShadow: "sd.system.elevation.shadow.level1",
         maxWidth: "600px",
         margin: "0 auto",
       })}
@@ -142,7 +141,7 @@ const VisxBarChartInner = () => {
       <h2
         className={css({
           color: theme.colors.primary,
-          marginBottom: token("spacing.sd.system.dimension.spacing.medium"),
+          marginBottom: "sd.system.dimension.spacing.medium",
         })}
       >
         Visx棒グラフサンプル
@@ -195,7 +194,7 @@ const VisxBarChartInner = () => {
         className={css({
           display: "flex",
           justifyContent: "center",
-          marginTop: token("spacing.sd.system.dimension.spacing.medium"),
+          marginTop: "sd.system.dimension.spacing.medium",
         })}
       >
         {keys.map((key) => (
@@ -204,7 +203,7 @@ const VisxBarChartInner = () => {
             className={css({
               display: "flex",
               alignItems: "center",
-              marginRight: token("spacing.sd.system.dimension.spacing.medium"),
+              marginRight: "sd.system.dimension.spacing.medium",
             })}
           >
             <div
@@ -213,9 +212,7 @@ const VisxBarChartInner = () => {
                 height: "12px",
                 marginRight: "6px",
                 backgroundColor: colorScale(key),
-                borderRadius: token(
-                  "radii.sd.system.dimension.radius.extraSmall"
-                ),
+                borderRadius: "sd.system.dimension.radius.extraSmall",
               })}
             />
             <span>{key === "productA" ? "製品A" : "製品B"}</span>
@@ -267,10 +264,10 @@ const VisxPieChartInner = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: token("spacing.sd.system.dimension.spacing.large"),
+        padding: "sd.system.dimension.spacing.large",
         backgroundColor: theme.colors.background,
-        borderRadius: token("radii.sd.system.dimension.radius.medium"),
-        boxShadow: token("shadows.sd.system.elevation.shadow.level1"),
+        borderRadius: "sd.system.dimension.radius.medium",
+        boxShadow: "sd.system.elevation.shadow.level1",
         maxWidth: "600px",
         margin: "0 auto",
       })}
@@ -278,7 +275,7 @@ const VisxPieChartInner = () => {
       <h2
         className={css({
           color: theme.colors.primary,
-          marginBottom: token("spacing.sd.system.dimension.spacing.medium"),
+          marginBottom: "sd.system.dimension.spacing.medium",
         })}
       >
         Visx円グラフサンプル
@@ -341,7 +338,7 @@ const VisxPieChartInner = () => {
         className={css({
           display: "flex",
           justifyContent: "center",
-          marginTop: token("spacing.sd.system.dimension.spacing.medium"),
+          marginTop: "sd.system.dimension.spacing.medium",
         })}
       >
         {pieData.map((d) => (
@@ -350,7 +347,7 @@ const VisxPieChartInner = () => {
             className={css({
               display: "flex",
               alignItems: "center",
-              marginRight: token("spacing.sd.system.dimension.spacing.medium"),
+              marginRight: "sd.system.dimension.spacing.medium",
             })}
           >
             <div
@@ -359,9 +356,7 @@ const VisxPieChartInner = () => {
                 height: "12px",
                 marginRight: "6px",
                 backgroundColor: pieColorScale(d.label),
-                borderRadius: token(
-                  "radii.sd.system.dimension.radius.extraSmall"
-                ),
+                borderRadius: "sd.system.dimension.radius.extraSmall",
               })}
             />
             <span>
@@ -436,8 +431,8 @@ const VisxSample = () => {
       <div
         className={css({
           display: "flex",
-          flexDirection: "column",
-          gap: token("spacing.sd.system.dimension.spacing.extraLarge"),
+          gap: "sd.system.dimension.spacing.extraLarge",
+          marginBottom: "sd.system.dimension.spacing.twoExtraLarge",
         })}
       >
         <VisxBarChartInner />

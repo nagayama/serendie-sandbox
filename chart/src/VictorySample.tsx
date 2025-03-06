@@ -1,4 +1,3 @@
-import React from "react";
 import {
   VictoryBar,
   VictoryChart,
@@ -8,7 +7,6 @@ import {
   VictoryPie,
   VictoryContainer,
 } from "victory";
-import { token } from "@serendie/ui/tokens";
 import { css } from "@serendie/ui/css";
 import SerendieTheme from "./VictoryTheme";
 
@@ -92,18 +90,18 @@ export const VictoryBarChart = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: token("spacing.sd.system.dimension.spacing.large"),
-        backgroundColor: token("colors.sd.system.color.component.surface"),
-        borderRadius: token("radii.sd.system.dimension.radius.medium"),
-        boxShadow: token("shadows.sd.system.elevation.shadow.level1"),
+        padding: "sd.system.dimension.spacing.large",
+        backgroundColor: "sd.system.color.component.surface",
+        borderRadius: "sd.system.dimension.radius.medium",
+        boxShadow: "sd.system.elevation.shadow.level1",
         maxWidth: "600px",
         margin: "0 auto",
       })}
     >
       <h2
         className={css({
-          color: token("colors.sd.system.color.impression.primary"),
-          marginBottom: token("spacing.sd.system.dimension.spacing.medium"),
+          color: "sd.system.color.impression.primary",
+          marginBottom: "sd.system.dimension.spacing.medium",
         })}
       >
         Victory棒グラフサンプル
@@ -182,18 +180,18 @@ export const VictoryPieChart = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: token("spacing.sd.system.dimension.spacing.large"),
-        backgroundColor: token("colors.sd.system.color.component.surface"),
-        borderRadius: token("radii.sd.system.dimension.radius.medium"),
-        boxShadow: token("shadows.sd.system.elevation.shadow.level1"),
+        padding: "sd.system.dimension.spacing.large",
+        backgroundColor: "sd.system.color.component.surface",
+        borderRadius: "sd.system.dimension.radius.medium",
+        boxShadow: "sd.system.elevation.shadow.level1",
         maxWidth: "600px",
         margin: "0 auto",
       })}
     >
       <h2
         className={css({
-          color: token("colors.sd.system.color.impression.primary"),
-          marginBottom: token("spacing.sd.system.dimension.spacing.medium"),
+          color: "sd.system.color.impression.primary",
+          marginBottom: "sd.system.dimension.spacing.medium",
         })}
       >
         Victory円グラフサンプル
@@ -226,7 +224,7 @@ export const VictoryPieChart = () => {
         className={css({
           display: "flex",
           justifyContent: "center",
-          marginTop: token("spacing.sd.system.dimension.spacing.medium"),
+          marginTop: "sd.system.dimension.spacing.medium",
         })}
       >
         {pieData.map((d, i) => (
@@ -235,7 +233,7 @@ export const VictoryPieChart = () => {
             className={css({
               display: "flex",
               alignItems: "center",
-              marginRight: token("spacing.sd.system.dimension.spacing.medium"),
+              marginRight: "sd.system.dimension.spacing.medium",
             })}
           >
             <div
@@ -245,11 +243,9 @@ export const VictoryPieChart = () => {
                 marginRight: "6px",
                 backgroundColor:
                   i === 0
-                    ? token("colors.sd.system.color.impression.primary")
-                    : token("colors.sd.system.color.impression.secondary"),
-                borderRadius: token(
-                  "radii.sd.system.dimension.radius.extraSmall"
-                ),
+                    ? "sd.system.color.impression.primary"
+                    : "sd.system.color.impression.secondary",
+                borderRadius: "sd.system.dimension.radius.extraSmall",
               })}
             />
             <span>
@@ -282,8 +278,7 @@ const VictorySample = () => {
     <div
       className={css({
         display: "flex",
-        flexDirection: "column",
-        gap: token("spacing.sd.system.dimension.spacing.extraLarge"),
+        gap: "sd.system.dimension.spacing.extraLarge",
       })}
     >
       <VictoryBarChart />

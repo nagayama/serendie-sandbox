@@ -1,3 +1,4 @@
+import React from "react";
 import {
   VictoryBar,
   VictoryChart,
@@ -8,9 +9,9 @@ import {
   VictoryContainer,
 } from "victory";
 import { css } from "@serendie/ui/css";
+import { token } from "@serendie/ui/tokens";
 import SerendieTheme from "./VictoryTheme";
-
-const animationDuration = 200;
+import ChartLegend, { LegendItem } from "./components/ChartLegend";
 
 /**
  * VictorySample.tsx
@@ -84,6 +85,24 @@ const pieData = [
  * 一貫したスタイルを実現しています。
  */
 export const VictoryBarChart = () => {
+  // 凡例アイテムの作成
+  const legendItems: LegendItem[] = [
+    {
+      key: "productA",
+      label: "製品A",
+      color:
+        SerendieTheme.group?.colorScale?.[0] ||
+        token("colors.sd.system.color.impression.primary"),
+    },
+    {
+      key: "productB",
+      label: "製品B",
+      color:
+        SerendieTheme.group?.colorScale?.[1] ||
+        token("colors.sd.system.color.impression.secondary"),
+    },
+  ];
+
   return (
     <div
       className={css({
@@ -108,7 +127,7 @@ export const VictoryBarChart = () => {
       </h2>
       {/* VictoryChart: チャート全体のコンテナ */}
       <VictoryChart
-        domainPadding={40} // バーの端がチャートの端に接触しないようにパディングを設定
+        domainPadding={{ x: 50 }} // バーの端がチャートの端に接触しないようにパディングを設定
         theme={SerendieTheme} // カスタムテーマを適用
         width={500}
         height={300}
@@ -134,29 +153,30 @@ export const VictoryBarChart = () => {
           tickFormat={(x) => `¥${x / 1000}k`} // 金額表示のフォーマット（千円単位）
         />
         {/* VictoryGroup: 複数の棒グラフをグループ化 */}
-        <VictoryGroup offset={30}>
-          {/* offset: グループ内の棒の間隔 */}
+        <VictoryGroup offset={25}>
           {/* VictoryBar: 製品Aの棒グラフ */}
           <VictoryBar
             data={productAData}
+            barWidth={20} // 棒の幅を指定
             animate={{
-              // アニメーション設定
-              duration: animationDuration, // アニメーションの時間（ミリ秒）
-              onLoad: { duration: animationDuration }, // 初期ロード時のアニメーション
+              duration: 2000, // アニメーションの時間（ミリ秒）
+              onLoad: { duration: 1000 }, // 初期ロード時のアニメーション
             }}
-            // 注: 色はテーマから自動的に適用される
           />
           {/* VictoryBar: 製品Bの棒グラフ */}
           <VictoryBar
             data={productBData}
+            barWidth={20} // 棒の幅を指定
             animate={{
-              duration: animationDuration,
-              onLoad: { duration: animationDuration },
+              duration: 2000,
+              onLoad: { duration: 1000 },
             }}
-            // 注: 色はテーマから自動的に適用される（2番目の色）
           />
         </VictoryGroup>
       </VictoryChart>
+
+      {/* 共通凡例コンポーネントを使用 */}
+      <ChartLegend items={legendItems} />
     </div>
   );
 };
@@ -174,6 +194,18 @@ export const VictoryBarChart = () => {
  * 棒グラフと一貫したスタイルを実現しています。
  */
 export const VictoryPieChart = () => {
+  // 凡例アイテムの作成
+  const legendItems: LegendItem[] = pieData.map((d, i) => ({
+    key: d.x,
+    label: d.x,
+    color:
+      SerendieTheme.pie?.colorScale?.[i] ||
+      (i === 0
+        ? token("colors.sd.system.color.impression.primary")
+        : token("colors.sd.system.color.impression.secondary")),
+    value: d.y,
+  }));
+
   return (
     <div
       className={css({
@@ -206,8 +238,8 @@ export const VictoryPieChart = () => {
         labelRadius={({ innerRadius }) => (innerRadius as number) + 30} // ラベルの配置半径
         animate={{
           // アニメーション設定
-          duration: animationDuration,
-          onLoad: { duration: animationDuration },
+          duration: 2000,
+          onLoad: { duration: 1000 },
         }}
         labels={({ datum }) => `${datum.x}: ¥${datum.y / 1000}k`} // ラベルのフォーマット
         containerComponent={
@@ -219,41 +251,12 @@ export const VictoryPieChart = () => {
         }
         // 注: 色はテーマから自動的に適用される
       />
-      {/* 凡例: 製品と色の対応を表示 */}
-      <div
-        className={css({
-          display: "flex",
-          justifyContent: "center",
-          marginTop: "sd.system.dimension.spacing.medium",
-        })}
-      >
-        {pieData.map((d, i) => (
-          <div
-            key={d.x}
-            className={css({
-              display: "flex",
-              alignItems: "center",
-              marginRight: "sd.system.dimension.spacing.medium",
-            })}
-          >
-            <div
-              className={css({
-                width: "12px",
-                height: "12px",
-                marginRight: "6px",
-                backgroundColor:
-                  i === 0
-                    ? "sd.system.color.impression.primary"
-                    : "sd.system.color.impression.secondary",
-                borderRadius: "sd.system.dimension.radius.extraSmall",
-              })}
-            />
-            <span>
-              {d.x}: ¥{(d.y / 1000).toLocaleString()}k
-            </span>
-          </div>
-        ))}
-      </div>
+
+      {/* 共通凡例コンポーネントを使用 */}
+      <ChartLegend
+        items={legendItems}
+        valueFormatter={(value) => `¥${(value / 1000).toLocaleString()}k`}
+      />
     </div>
   );
 };

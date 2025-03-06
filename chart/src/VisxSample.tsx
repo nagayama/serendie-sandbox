@@ -1,3 +1,4 @@
+import React from "react";
 import { BarGroup } from "@visx/shape";
 import { Group } from "@visx/group";
 import { AxisBottom, AxisLeft } from "@visx/axis";
@@ -9,6 +10,7 @@ import { Pie } from "@visx/shape";
 import { Text } from "@visx/text";
 import { GradientPinkBlue } from "@visx/gradient";
 import { VisxThemeProvider, useVisxTheme } from "./VisxTheme";
+import ChartLegend, { LegendItem } from "./components/ChartLegend";
 
 /**
  * VisxSample.tsx
@@ -124,6 +126,13 @@ const VisxBarChartInner = () => {
   productScale.rangeRound([0, quarterScale.bandwidth()]);
   valueScale.range([yMax, 0]); // 注: y軸は上下が反転（0が下）
 
+  // 凡例アイテムの作成
+  const legendItems: LegendItem[] = keys.map((key) => ({
+    key,
+    label: key === "productA" ? "製品A" : "製品B",
+    color: colorScale(key),
+  }));
+
   return (
     <div
       className={css({
@@ -189,36 +198,8 @@ const VisxBarChartInner = () => {
           />
         </Group>
       </svg>
-      {/* 凡例: 製品と色の対応を表示 */}
-      <div
-        className={css({
-          display: "flex",
-          justifyContent: "center",
-          marginTop: "sd.system.dimension.spacing.medium",
-        })}
-      >
-        {keys.map((key) => (
-          <div
-            key={key}
-            className={css({
-              display: "flex",
-              alignItems: "center",
-              marginRight: "sd.system.dimension.spacing.medium",
-            })}
-          >
-            <div
-              className={css({
-                width: "12px",
-                height: "12px",
-                marginRight: "6px",
-                backgroundColor: colorScale(key),
-                borderRadius: "sd.system.dimension.radius.extraSmall",
-              })}
-            />
-            <span>{key === "productA" ? "製品A" : "製品B"}</span>
-          </div>
-        ))}
-      </div>
+      {/* 共通凡例コンポーネントを使用 */}
+      <ChartLegend items={legendItems} />
     </div>
   );
 };
@@ -257,6 +238,14 @@ const VisxPieChartInner = () => {
     domain: pieData.map(getPieLabel),
     range: [theme.colors.primary, theme.colors.secondary],
   });
+
+  // 凡例アイテムの作成
+  const legendItems: LegendItem[] = pieData.map((d) => ({
+    key: d.label,
+    label: d.label,
+    color: pieColorScale(d.label),
+    value: d.value,
+  }));
 
   return (
     <div
@@ -333,38 +322,11 @@ const VisxPieChartInner = () => {
           </Pie>
         </Group>
       </svg>
-      {/* 凡例: 製品と色の対応を表示 */}
-      <div
-        className={css({
-          display: "flex",
-          justifyContent: "center",
-          marginTop: "sd.system.dimension.spacing.medium",
-        })}
-      >
-        {pieData.map((d) => (
-          <div
-            key={d.label}
-            className={css({
-              display: "flex",
-              alignItems: "center",
-              marginRight: "sd.system.dimension.spacing.medium",
-            })}
-          >
-            <div
-              className={css({
-                width: "12px",
-                height: "12px",
-                marginRight: "6px",
-                backgroundColor: pieColorScale(d.label),
-                borderRadius: "sd.system.dimension.radius.extraSmall",
-              })}
-            />
-            <span>
-              {d.label}: ¥{(d.value / 1000).toLocaleString()}k
-            </span>
-          </div>
-        ))}
-      </div>
+      {/* 共通凡例コンポーネントを使用 */}
+      <ChartLegend
+        items={legendItems}
+        valueFormatter={(value) => `¥${(value / 1000).toLocaleString()}k`}
+      />
     </div>
   );
 };
@@ -432,7 +394,6 @@ const VisxSample = () => {
         className={css({
           display: "flex",
           gap: "sd.system.dimension.spacing.extraLarge",
-          marginBottom: "sd.system.dimension.spacing.twoExtraLarge",
         })}
       >
         <VisxBarChartInner />

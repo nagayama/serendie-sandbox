@@ -12,9 +12,9 @@ import {
   Pie,
   Cell,
 } from "recharts";
-import { token } from "@serendie/ui/tokens";
 import { css } from "@serendie/ui/css";
 import { RechartsThemeProvider, useRechartsTheme } from "./RechartsTheme";
+import ChartLegend, { LegendItem } from "./components/ChartLegend";
 
 /**
  * ReChartSample.tsx
@@ -91,6 +91,12 @@ const pieData = [
 const RechartBarChartInner = () => {
   // テーマからスタイルを取得
   const theme = useRechartsTheme();
+
+  // 凡例アイテムの作成
+  const legendItems: LegendItem[] = [
+    { key: "productA", label: "製品A", color: theme.colors.primary },
+    { key: "productB", label: "製品B", color: theme.colors.secondary },
+  ];
 
   return (
     <div
@@ -188,6 +194,9 @@ const RechartBarChartInner = () => {
           />
         </BarChart>
       </ResponsiveContainer>
+
+      {/* 共通凡例コンポーネントを使用 */}
+      <ChartLegend items={legendItems} />
     </div>
   );
 };
@@ -209,6 +218,14 @@ const RechartBarChartInner = () => {
 const RechartPieChartInner = () => {
   // テーマからスタイルを取得
   const theme = useRechartsTheme();
+
+  // 凡例アイテムの作成
+  const legendItems: LegendItem[] = pieData.map((d, i) => ({
+    key: d.name,
+    label: d.name,
+    color: theme.colors.scale[i % theme.colors.scale.length],
+    value: d.value,
+  }));
 
   return (
     <div
@@ -272,39 +289,12 @@ const RechartPieChartInner = () => {
           </Pie>
         </PieChart>
       </ResponsiveContainer>
-      {/* 凡例: 製品と色の対応を表示 */}
-      <div
-        className={css({
-          display: "flex",
-          justifyContent: "center",
-          marginTop: "sd.system.dimension.spacing.medium",
-        })}
-      >
-        {pieData.map((d, i) => (
-          <div
-            key={d.name}
-            className={css({
-              display: "flex",
-              alignItems: "center",
-              marginRight: "sd.system.dimension.spacing.medium",
-            })}
-          >
-            <div
-              className={css({
-                width: "12px",
-                height: "12px",
-                marginRight: "6px",
-                backgroundColor:
-                  theme.colors.scale[i % theme.colors.scale.length],
-                borderRadius: "sd.system.dimension.radius.extraSmall",
-              })}
-            />
-            <span>
-              {d.name}: ¥{(d.value / 1000).toLocaleString()}k
-            </span>
-          </div>
-        ))}
-      </div>
+
+      {/* 共通凡例コンポーネントを使用 */}
+      <ChartLegend
+        items={legendItems}
+        valueFormatter={(value) => `¥${(value / 1000).toLocaleString()}k`}
+      />
     </div>
   );
 };
@@ -371,7 +361,7 @@ const ReChartSample = () => {
       <div
         className={css({
           display: "flex",
-          gap: token("spacing.sd.system.dimension.spacing.extraLarge"),
+          gap: "sd.system.dimension.spacing.extraLarge",
         })}
       >
         <RechartBarChartInner />

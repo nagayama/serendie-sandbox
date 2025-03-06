@@ -14,6 +14,7 @@ import {
 } from "recharts";
 import { token } from "@serendie/ui/tokens";
 import { css } from "@serendie/ui/css";
+import { RechartsThemeProvider, useRechartsTheme } from "./RechartsTheme";
 
 /**
  * ReChartSample.tsx
@@ -29,9 +30,13 @@ import { css } from "@serendie/ui/css";
  * - D3.jsベース: D3.jsの機能を内部で使用しているが、直接D3を扱う必要はない
  *
  * このファイルでは以下のコンポーネントを実装しています:
- * 1. RechartBarChart - 棒グラフコンポーネント
- * 2. RechartPieChart - 円グラフコンポーネント
- * 3. ReChartSample - 両方のグラフを表示するメインコンポーネント
+ * 1. RechartBarChartInner - テーマを使用する棒グラフの内部コンポーネント
+ * 2. RechartPieChartInner - テーマを使用する円グラフの内部コンポーネント
+ * 3. RechartBarChart - テーマプロバイダーでラップした棒グラフコンポーネント
+ * 4. RechartPieChart - テーマプロバイダーでラップした円グラフコンポーネント
+ * 5. ReChartSample - 両方のグラフを表示するメインコンポーネント
+ *
+ * また、カスタムテーマシステムを使用して、スタイルを一元管理しています。
  */
 
 // サンプルデータ
@@ -67,82 +72,75 @@ const pieData = [
   { name: "製品B", value: data.reduce((sum, d) => sum + d.productB, 0) },
 ];
 
-// 色の配列
-const COLORS = [
-  token("colors.sd.system.color.impression.primary"),
-  token("colors.sd.system.color.impression.secondary"),
-];
-
 /**
- * RechartBarChart - Rechartsを使用した棒グラフコンポーネント
+ * RechartBarChartInner - テーマを使用する棒グラフの内部コンポーネント
  *
  * このコンポーネントは以下の役割を持ちます:
- * 1. ResponsiveContainerでレスポンシブ対応
- * 2. BarChartをコンテナとして使用
- * 3. Barコンポーネントで各データシリーズを表示
- * 4. XAxis、YAxisで軸を設定
- * 5. CartesianGridでグリッド線を表示
- * 6. Tooltipでホバー時の詳細情報を表示
- * 7. Legendで凡例を表示
+ * 1. useRechartsThemeフックを使用してテーマにアクセス
+ * 2. ResponsiveContainerでレスポンシブ対応
+ * 3. BarChartをコンテナとして使用
+ * 4. Barコンポーネントで各データシリーズを表示
+ * 5. XAxis、YAxisで軸を設定
+ * 6. CartesianGridでグリッド線を表示
+ * 7. Tooltipでホバー時の詳細情報を表示
+ * 8. Legendで凡例を表示
  *
  * Rechartsの特徴として、各コンポーネントを組み合わせることで
  * 必要な機能を持つチャートを構築できます。
  */
-export const RechartBarChart = () => {
+const RechartBarChartInner = () => {
+  // テーマからスタイルを取得
+  const theme = useRechartsTheme();
+
   return (
     <div
       className={css({
         display: "flex",
+        flex: 1,
         flexDirection: "column",
         alignItems: "center",
         padding: "sd.system.dimension.spacing.large",
-        backgroundColor: "sd.system.color.component.surface",
+        backgroundColor: theme.colors.background,
         borderRadius: "sd.system.dimension.radius.medium",
         boxShadow: "sd.system.elevation.shadow.level1",
         maxWidth: "600px",
         margin: "0 auto",
-        flex: 1,
       })}
     >
       <h2
         className={css({
-          color: "sd.system.color.impression.primary",
+          color: theme.colors.primary,
           marginBottom: "sd.system.dimension.spacing.medium",
         })}
       >
         Recharts棒グラフサンプル
       </h2>
       {/* ResponsiveContainer: レスポンシブ対応のためのコンテナ */}
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer
+        width={theme.chart.width}
+        height={theme.chart.height}
+      >
         {/* BarChart: 棒グラフのコンテナ */}
-        <BarChart
-          data={data}
-          margin={{
-            top: 20,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
+        <BarChart data={data} margin={theme.spacing.margin}>
           {/* CartesianGrid: グリッド線 */}
           <CartesianGrid
             strokeDasharray="3 3"
-            stroke={token("colors.sd.system.color.component.outline")}
+            stroke={theme.colors.grid}
             opacity={0.5}
           />
           {/* XAxis: x軸 */}
           <XAxis
             dataKey="quarter"
-            tick={{ fill: token("colors.sd.system.color.component.onSurface") }}
+            tick={{ fill: theme.colors.text }}
             axisLine={{
-              stroke: token("colors.sd.system.color.component.outline"),
+              stroke: theme.colors.axis,
             }}
           />
           {/* YAxis: y軸 */}
           <YAxis
-            tick={{ fill: token("colors.sd.system.color.component.onSurface") }}
+            tick={{ fill: theme.colors.text }}
             axisLine={{
-              stroke: token("colors.sd.system.color.component.outline"),
+              stroke: theme.colors.axis,
             }}
             // 金額表示のフォーマット（千円単位）
             tickFormatter={(value) => `¥${value / 1000}k`}
@@ -151,10 +149,9 @@ export const RechartBarChart = () => {
           <Tooltip
             formatter={(value) => [`¥${Number(value).toLocaleString()}`, ""]}
             contentStyle={{
-              backgroundColor: token(
-                "colors.sd.system.color.component.surface"
-              ),
-              borderColor: token("colors.sd.system.color.component.outline"),
+              backgroundColor: theme.colors.tooltip.background,
+              borderColor: theme.colors.tooltip.border,
+              color: theme.colors.tooltip.text,
             }}
           />
           {/* Legend: 凡例 */}
@@ -165,17 +162,29 @@ export const RechartBarChart = () => {
           <Bar
             dataKey="productA"
             name="製品A"
-            fill={token("colors.sd.system.color.impression.primary")}
-            radius={[4, 4, 0, 0]} // 棒の上部を角丸に
-            animationDuration={2000}
+            fill={theme.colors.primary}
+            radius={[
+              theme.spacing.radius.small,
+              theme.spacing.radius.small,
+              0,
+              0,
+            ]} // 棒の上部を角丸に
+            animationDuration={theme.animation.duration}
+            barSize={theme.chart.barSize}
           />
           {/* Bar: 製品Bの棒グラフ */}
           <Bar
             dataKey="productB"
             name="製品B"
-            fill={token("colors.sd.system.color.impression.secondary")}
-            radius={[4, 4, 0, 0]} // 棒の上部を角丸に
-            animationDuration={2000}
+            fill={theme.colors.secondary}
+            radius={[
+              theme.spacing.radius.small,
+              theme.spacing.radius.small,
+              0,
+              0,
+            ]} // 棒の上部を角丸に
+            animationDuration={theme.animation.duration}
+            barSize={theme.chart.barSize}
           />
         </BarChart>
       </ResponsiveContainer>
@@ -184,54 +193,57 @@ export const RechartBarChart = () => {
 };
 
 /**
- * RechartPieChart - Rechartsを使用した円グラフコンポーネント
+ * RechartPieChartInner - テーマを使用する円グラフの内部コンポーネント
  *
  * このコンポーネントは以下の役割を持ちます:
- * 1. ResponsiveContainerでレスポンシブ対応
- * 2. PieChartをコンテナとして使用
- * 3. Pieコンポーネントで円グラフを表示
- * 4. Cellコンポーネントで各セグメントの色を設定
- * 5. Tooltipでホバー時の詳細情報を表示
+ * 1. useRechartsThemeフックを使用してテーマにアクセス
+ * 2. ResponsiveContainerでレスポンシブ対応
+ * 3. PieChartをコンテナとして使用
+ * 4. Pieコンポーネントで円グラフを表示
+ * 5. Cellコンポーネントで各セグメントの色を設定
+ * 6. Tooltipでホバー時の詳細情報を表示
  *
  * Rechartsの円グラフは、Pieコンポーネントと
  * Cellコンポーネントを組み合わせて実装します。
  */
-export const RechartPieChart = () => {
+const RechartPieChartInner = () => {
+  // テーマからスタイルを取得
+  const theme = useRechartsTheme();
+
   return (
     <div
       className={css({
         display: "flex",
+        flex: 1,
         flexDirection: "column",
         alignItems: "center",
         padding: "sd.system.dimension.spacing.large",
-        backgroundColor: "sd.system.color.component.surface",
+        backgroundColor: theme.colors.background,
         borderRadius: "sd.system.dimension.radius.medium",
         boxShadow: "sd.system.elevation.shadow.level1",
         maxWidth: "600px",
         margin: "0 auto",
-        flex: 1,
       })}
     >
       <h2
         className={css({
-          color: "sd.system.color.impression.primary",
+          color: theme.colors.primary,
           marginBottom: "sd.system.dimension.spacing.medium",
         })}
       >
         Recharts円グラフサンプル
       </h2>
       {/* ResponsiveContainer: レスポンシブ対応のためのコンテナ */}
-      <ResponsiveContainer width="100%" height={400}>
+      <ResponsiveContainer width={theme.chart.width} height={400}>
         {/* PieChart: 円グラフのコンテナ */}
         <PieChart>
           {/* Tooltip: ホバー時の詳細情報 */}
           <Tooltip
             formatter={(value) => [`¥${Number(value).toLocaleString()}`, ""]}
             contentStyle={{
-              backgroundColor: token(
-                "colors.sd.system.color.component.surface"
-              ),
-              borderColor: token("colors.sd.system.color.component.outline"),
+              backgroundColor: theme.colors.tooltip.background,
+              borderColor: theme.colors.tooltip.border,
+              color: theme.colors.tooltip.text,
             }}
           />
           {/* Pie: 円グラフ本体 */}
@@ -240,21 +252,21 @@ export const RechartPieChart = () => {
             cx="50%"
             cy="50%"
             labelLine={false}
-            outerRadius={150}
-            innerRadius={70} // ドーナツチャート用の内側半径
+            outerRadius={theme.chart.pieOuterRadius}
+            innerRadius={theme.chart.pieInnerRadius} // ドーナツチャート用の内側半径
             fill="#8884d8"
             dataKey="value"
             nameKey="name"
             label={({ name, percent }) =>
               `${name}: ${(percent * 100).toFixed(0)}%`
             }
-            animationDuration={2000}
+            animationDuration={theme.animation.duration}
           >
             {/* Cell: 各セグメントの色を設定 */}
             {pieData.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
+                fill={theme.colors.scale[index % theme.colors.scale.length]}
               />
             ))}
           </Pie>
@@ -282,7 +294,8 @@ export const RechartPieChart = () => {
                 width: "12px",
                 height: "12px",
                 marginRight: "6px",
-                backgroundColor: COLORS[i],
+                backgroundColor:
+                  theme.colors.scale[i % theme.colors.scale.length],
                 borderRadius: "sd.system.dimension.radius.extraSmall",
               })}
             />
@@ -297,28 +310,74 @@ export const RechartPieChart = () => {
 };
 
 /**
+ * RechartBarChart - テーマプロバイダーでラップした棒グラフコンポーネント
+ *
+ * このコンポーネントは外部から使用される際にテーマを提供します。
+ * RechartsThemeProviderでラップすることで、内部コンポーネントがテーマにアクセスできるようになります。
+ *
+ * 使用例:
+ * ```tsx
+ * <RechartBarChart />
+ * ```
+ */
+export const RechartBarChart = () => {
+  return (
+    <RechartsThemeProvider>
+      <RechartBarChartInner />
+    </RechartsThemeProvider>
+  );
+};
+
+/**
+ * RechartPieChart - テーマプロバイダーでラップした円グラフコンポーネント
+ *
+ * このコンポーネントは外部から使用される際にテーマを提供します。
+ * RechartsThemeProviderでラップすることで、内部コンポーネントがテーマにアクセスできるようになります。
+ *
+ * 使用例:
+ * ```tsx
+ * <RechartPieChart />
+ * ```
+ */
+export const RechartPieChart = () => {
+  return (
+    <RechartsThemeProvider>
+      <RechartPieChartInner />
+    </RechartsThemeProvider>
+  );
+};
+
+/**
  * ReChartSample - 棒グラフと円グラフの両方を表示するメインコンポーネント
  *
  * このコンポーネントは、棒グラフと円グラフの両方を縦に並べて表示します。
- * Rechartsの特徴として、ResponsiveContainerを使用することで
- * レスポンシブなチャートを簡単に実装できます。
+ * 共通のテーマプロバイダーでラップすることで、両方のグラフで同じテーマを共有できます。
  *
  * 使用例:
  * ```tsx
  * <ReChartSample />
  * ```
+ *
+ * カスタムテーマを適用する場合:
+ * ```tsx
+ * <RechartsThemeProvider theme={customTheme}>
+ *   <ReChartSample />
+ * </RechartsThemeProvider>
+ * ```
  */
 const ReChartSample = () => {
   return (
-    <div
-      className={css({
-        display: "flex",
-        gap: "sd.system.dimension.spacing.extraLarge",
-      })}
-    >
-      <RechartBarChart />
-      <RechartPieChart />
-    </div>
+    <RechartsThemeProvider>
+      <div
+        className={css({
+          display: "flex",
+          gap: token("spacing.sd.system.dimension.spacing.extraLarge"),
+        })}
+      >
+        <RechartBarChartInner />
+        <RechartPieChartInner />
+      </div>
+    </RechartsThemeProvider>
   );
 };
 

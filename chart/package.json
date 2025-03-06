@@ -23,6 +23,7 @@
     "d3-scale": "^4.0.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "recharts": "^2.15.1",
     "victory": "^37.3.6"
   },
   "devDependencies": {

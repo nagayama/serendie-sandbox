@@ -12,6 +12,8 @@ import { token } from "@serendie/ui/tokens";
 import { css } from "@serendie/ui/css";
 import SerendieTheme from "./VictoryTheme";
 
+const animationDuration = 200;
+
 /**
  * VictorySample.tsx
  *
@@ -134,15 +136,15 @@ export const VictoryBarChart = () => {
           tickFormat={(x) => `¥${x / 1000}k`} // 金額表示のフォーマット（千円単位）
         />
         {/* VictoryGroup: 複数の棒グラフをグループ化 */}
-        <VictoryGroup offset={20}>
+        <VictoryGroup offset={30}>
           {/* offset: グループ内の棒の間隔 */}
           {/* VictoryBar: 製品Aの棒グラフ */}
           <VictoryBar
             data={productAData}
             animate={{
               // アニメーション設定
-              duration: 2000, // アニメーションの時間（ミリ秒）
-              onLoad: { duration: 1000 }, // 初期ロード時のアニメーション
+              duration: animationDuration, // アニメーションの時間（ミリ秒）
+              onLoad: { duration: animationDuration }, // 初期ロード時のアニメーション
             }}
             // 注: 色はテーマから自動的に適用される
           />
@@ -150,8 +152,8 @@ export const VictoryBarChart = () => {
           <VictoryBar
             data={productBData}
             animate={{
-              duration: 2000,
-              onLoad: { duration: 1000 },
+              duration: animationDuration,
+              onLoad: { duration: animationDuration },
             }}
             // 注: 色はテーマから自動的に適用される（2番目の色）
           />
@@ -206,8 +208,8 @@ export const VictoryPieChart = () => {
         labelRadius={({ innerRadius }) => (innerRadius as number) + 30} // ラベルの配置半径
         animate={{
           // アニメーション設定
-          duration: 2000,
-          onLoad: { duration: 1000 },
+          duration: animationDuration,
+          onLoad: { duration: animationDuration },
         }}
         labels={({ datum }) => `${datum.x}: ¥${datum.y / 1000}k`} // ラベルのフォーマット
         containerComponent={

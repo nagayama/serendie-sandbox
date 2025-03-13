@@ -13,9 +13,8 @@ import ChartLegend, { LegendItem } from "../../components/ChartLegend";
  * 2. アニメーションとラベルを設定
  * 3. 凡例を表示
  *
- * Victoryの円グラフは、単一のVictoryPieコンポーネントで
- * 完結するシンプルな実装が可能です。テーマを適用することで
- * 棒グラフと一貫したスタイルを実現しています。
+ * 注意: VictoryPieはVictoryChartを使用しないため、SerendieChartではなく
+ * 直接SerendieThemeを適用しています。
  */
 export const VictoryPieChart: React.FC = () => {
   // サンプルデータ
@@ -89,7 +88,7 @@ export const VictoryPieChart: React.FC = () => {
         data={pieData}
         width={400}
         height={400}
-        theme={SerendieTheme} // カスタムテーマを適用
+        theme={SerendieTheme} // SerendieThemeを直接適用
         innerRadius={70} // 内側の半径（ドーナツ形状）
         labelRadius={({ innerRadius }) => (innerRadius as number) + 30} // ラベルの配置半径
         animate={{

@@ -1,21 +1,13 @@
 import React from "react";
-import {
-  VictoryBar,
-  VictoryChart,
-  VictoryAxis,
-  VictoryGroup,
-  VictoryLegend,
-  VictoryContainer,
-} from "victory";
+import { VictoryBar, VictoryAxis, VictoryGroup, VictoryLegend } from "victory";
 import { css } from "@serendie/ui/css";
-import { token } from "@serendie/ui/tokens";
-import SerendieTheme from "../../VictoryTheme";
+import { SerendieChart } from "./components";
 
 /**
  * VictoryBarChart - Victoryを使用した棒グラフコンポーネント
  *
  * このコンポーネントは以下の役割を持ちます:
- * 1. VictoryChartをコンテナとして使用
+ * 1. SerendieChartをコンテナとして使用
  * 2. VictoryAxisでx軸とy軸を設定
  * 3. VictoryGroupで複数の棒グラフをグループ化
  * 4. VictoryBarで各データセットを棒グラフとして表示
@@ -78,10 +70,9 @@ export const VictoryBarChart: React.FC = () => {
       >
         Victory棒グラフサンプル
       </h2>
-      {/* VictoryChart: チャート全体のコンテナ */}
-      <VictoryChart
+      {/* SerendieChart: SerendieThemeを適用したチャートコンテナ */}
+      <SerendieChart
         domainPadding={{ x: 50 }} // バーの端がチャートの端に接触しないようにパディングを設定
-        theme={SerendieTheme} // カスタムテーマを適用
         width={500}
         height={300}
       >
@@ -126,7 +117,7 @@ export const VictoryBarChart: React.FC = () => {
             }}
           />
         </VictoryGroup>
-      </VictoryChart>
+      </SerendieChart>
     </div>
   );
 };

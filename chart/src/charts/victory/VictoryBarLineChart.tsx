@@ -1,17 +1,15 @@
 import React from "react";
 import {
   VictoryBar,
-  VictoryChart,
   VictoryAxis,
   VictoryLine,
   VictoryScatter,
   VictoryLabel,
   VictoryLegend,
-  VictoryContainer,
 } from "victory";
 import { css } from "@serendie/ui/css";
 import { token } from "@serendie/ui/tokens";
-import SerendieTheme from "../../VictoryTheme";
+import { SerendieChart } from "./components";
 
 /**
  * VictoryBarLineChart - 棒グラフと線グラフを組み合わせたコンポーネント
@@ -24,6 +22,8 @@ import SerendieTheme from "../../VictoryTheme";
  *
  * 複合チャートの例として、実際の売上データと目標値の比較、
  * および平均値との関係を視覚的に表現しています。
+ *
+ * SerendieChartを使用することで、SerendieThemeが自動的に適用されます。
  */
 export const VictoryBarLineChart: React.FC = () => {
   // サンプルデータ - 月次売上データ（数値のxを使用）
@@ -73,14 +73,12 @@ export const VictoryBarLineChart: React.FC = () => {
         棒グラフと線グラフの組み合わせ
       </h2>
 
-      {/* VictoryChart: チャート全体のコンテナ */}
-      <VictoryChart
-        theme={SerendieTheme}
+      {/* SerendieChart: SerendieThemeを適用したチャートコンテナ */}
+      <SerendieChart
         domainPadding={{ x: 25 }}
         padding={{ top: 50, bottom: 50, left: 60, right: 100 }}
         width={500}
         height={300}
-        containerComponent={<VictoryContainer />}
       >
         {/* X軸 */}
         <VictoryAxis
@@ -214,7 +212,7 @@ export const VictoryBarLineChart: React.FC = () => {
             },
           ]}
         />
-      </VictoryChart>
+      </SerendieChart>
     </div>
   );
 };

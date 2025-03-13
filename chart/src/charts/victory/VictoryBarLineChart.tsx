@@ -1,15 +1,9 @@
 import React from "react";
-import {
-  VictoryBar,
-  VictoryAxis,
-  VictoryLine,
-  VictoryScatter,
-  VictoryLabel,
-  VictoryLegend,
-} from "victory";
+import { VictoryBar, VictoryAxis, VictoryLine, VictoryLegend } from "victory";
 import { css } from "@serendie/ui/css";
 import { token } from "@serendie/ui/tokens";
 import { SerendieChart } from "./components";
+import SerendieTheme from "../../VictoryTheme";
 
 /**
  * VictoryBarLineChart - 棒グラフと線グラフを組み合わせたコンポーネント
@@ -50,6 +44,20 @@ export const VictoryBarLineChart: React.FC = () => {
   const averageValue =
     barData.reduce((sum, item) => sum + item.y, 0) / barData.length;
 
+  // X軸のラベル（月表示）
+  const monthLabels = ["1月", "2月", "3月", "4月", "5月", "6月"];
+
+  // テーマから色を取得
+  const primaryColor =
+    SerendieTheme.group?.colorScale?.[0] ||
+    token("colors.sd.system.color.impression.primary");
+  const secondaryColor =
+    SerendieTheme.group?.colorScale?.[1] ||
+    token("colors.sd.system.color.impression.secondary");
+  const tertiaryColor =
+    SerendieTheme.group?.colorScale?.[2] ||
+    token("colors.sd.system.color.impression.tertiary");
+
   return (
     <div
       className={css({
@@ -81,79 +89,22 @@ export const VictoryBarLineChart: React.FC = () => {
         height={300}
       >
         {/* X軸 */}
-        <VictoryAxis
-          tickValues={[1, 2, 3, 4, 5, 6]}
-          tickFormat={["1月", "2月", "3月", "4月", "5月", "6月"]}
-          style={{
-            axis: { stroke: token("colors.sd.system.color.component.outline") },
-            tickLabels: {
-              fill: token("colors.sd.system.color.component.onSurface"),
-            },
-          }}
-        />
+        <VictoryAxis tickFormat={monthLabels} />
 
         {/* Y軸 */}
-        <VictoryAxis
-          dependentAxis
-          tickFormat={(t) => `¥${t}k`}
-          style={{
-            axis: { stroke: token("colors.sd.system.color.component.outline") },
-            tickLabels: {
-              fill: token("colors.sd.system.color.component.onSurface"),
-            },
-            grid: {
-              stroke: token("colors.sd.system.color.component.outline"),
-              strokeDasharray: "5,5",
-              strokeOpacity: 0.3,
-            },
-          }}
-        />
+        <VictoryAxis dependentAxis tickFormat={(t) => `¥${t}k`} />
 
         {/* 棒グラフ */}
-        <VictoryBar
-          data={barData}
-          x="x"
-          y="y"
-          style={{
-            data: { fill: token("colors.sd.system.color.impression.primary") },
-          }}
-          barWidth={30}
-          alignment="middle"
-        />
+        <VictoryBar data={barData} />
 
         {/* 線グラフ */}
-        <VictoryLine
-          data={lineData}
-          x="x"
-          y="y"
-          style={{
-            data: {
-              stroke: token("colors.sd.system.color.impression.secondary"),
-              strokeWidth: 3,
-            },
-          }}
-        />
-
-        {/* 線グラフのポイント */}
-        <VictoryScatter
-          data={lineData}
-          x="x"
-          y="y"
-          size={5}
-          style={{
-            data: {
-              fill: token("colors.sd.system.color.impression.secondary"),
-              stroke: "white",
-              strokeWidth: 2,
-            },
-          }}
-        />
+        <VictoryLine data={lineData} />
 
         {/* 平均値の水平線 */}
         <VictoryLine
           style={{
             data: {
-              stroke: token("colors.sd.system.color.impression.tertiary"),
+              stroke: "red",
               strokeWidth: 2,
               strokeDasharray: "5,5",
             },
@@ -164,51 +115,24 @@ export const VictoryBarLineChart: React.FC = () => {
           ]}
         />
 
-        {/* 平均値のラベル */}
-        <VictoryLabel
-          text={`平均: ¥${averageValue.toFixed(1)}k`}
-          x={450}
-          y={300 - (averageValue / 250) * 200}
-          style={{
-            fill: token("colors.sd.system.color.impression.tertiary"),
-            fontSize: 12,
-            fontFamily: token(
-              "fonts.sd.reference.typography.fontFamily.primary"
-            ),
-          }}
-        />
-
         {/* レジェンド */}
         <VictoryLegend
           x={400}
           y={50}
           orientation="vertical"
           gutter={20}
-          style={{
-            border: { stroke: "none" },
-            labels: {
-              fill: token("colors.sd.system.color.component.onSurface"),
-            },
-          }}
           data={[
             {
               name: "実績",
-              symbol: {
-                fill: token("colors.sd.system.color.impression.primary"),
-              },
+              symbol: { fill: primaryColor },
             },
             {
               name: "目標",
-              symbol: {
-                fill: token("colors.sd.system.color.impression.secondary"),
-              },
+              symbol: { fill: secondaryColor },
             },
             {
               name: "平均",
-              symbol: {
-                fill: token("colors.sd.system.color.impression.tertiary"),
-                type: "minus",
-              },
+              symbol: { fill: tertiaryColor, type: "minus" },
             },
           ]}
         />

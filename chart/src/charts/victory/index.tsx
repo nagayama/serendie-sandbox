@@ -1,6 +1,7 @@
 import VictoryBarChart from "./VictoryBarChart";
 import VictoryPieChart from "./VictoryPieChart";
 import VictoryBarLineChart from "./VictoryBarLineChart";
+import VictoryStackedBarLineChart from "./VictoryStackedBarLineChart";
 
 /**
  * Victoryチャートコンポーネント
@@ -40,6 +41,7 @@ const VictorySample: React.FC = () => {
         <VictoryPieChart />
       </div>
       <VictoryBarLineChart />
+      <VictoryStackedBarLineChart />
     </div>
   );
 };

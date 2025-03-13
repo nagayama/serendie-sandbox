@@ -1,8 +1,6 @@
 import { css } from "@serendie/ui/css";
 import { token } from "@serendie/ui/tokens";
-import VisxSample from "./VisxSample";
-import VictorySample from "./VictorySample";
-import ReChartSample from "./ReChartSample";
+import VictorySample from "./charts/victory";
 
 function App() {
   return (
@@ -10,65 +8,27 @@ function App() {
       className={css({
         padding: token("spacing.sd.system.dimension.spacing.large"),
         minHeight: "100vh",
+        backgroundColor: token("colors.sd.system.color.component.surface"),
       })}
     >
       <h1
         className={css({
           marginBottom: token("spacing.sd.system.dimension.spacing.large"),
           textAlign: "center",
+          color: token("colors.sd.system.color.component.onSurface"),
         })}
       >
-        チャートライブラリ比較
+        Victoryチャートライブラリ
       </h1>
 
       <div
         className={css({
           display: "flex",
           flexDirection: "column",
-          gap:
-            token("spacing.sd.system.dimension.spacing.extraLarge") +
-            " " +
-            token("spacing.sd.system.dimension.spacing.extraLarge"),
+          gap: token("spacing.sd.system.dimension.spacing.extraLarge"),
         })}
       >
-        <section>
-          <h2
-            className={css({
-              color: token("colors.sd.system.color.component.onSurface"),
-              marginBottom: token("spacing.sd.system.dimension.spacing.medium"),
-              textAlign: "center",
-            })}
-          >
-            Visx
-          </h2>
-          <VisxSample />
-        </section>
-
-        <section>
-          <h2
-            className={css({
-              color: token("colors.sd.system.color.component.onSurface"),
-              marginBottom: token("spacing.sd.system.dimension.spacing.medium"),
-              textAlign: "center",
-            })}
-          >
-            Victory
-          </h2>
-          <VictorySample />
-        </section>
-
-        <section>
-          <h2
-            className={css({
-              color: token("colors.sd.system.color.component.onSurface"),
-              marginBottom: token("spacing.sd.system.dimension.spacing.medium"),
-              textAlign: "center",
-            })}
-          >
-            Recharts
-          </h2>
-          <ReChartSample />
-        </section>
+        <VictorySample />
       </div>
     </div>
   );

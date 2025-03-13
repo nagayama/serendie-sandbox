@@ -92,12 +92,6 @@ const RechartBarChartInner = () => {
   // テーマからスタイルを取得
   const theme = useRechartsTheme();
 
-  // 凡例アイテムの作成
-  const legendItems: LegendItem[] = [
-    { key: "productA", label: "製品A", color: theme.colors.primary },
-    { key: "productB", label: "製品B", color: theme.colors.secondary },
-  ];
-
   return (
     <div
       className={css({

@@ -3,7 +3,7 @@ import { VictoryBar, VictoryAxis, VictoryLine, VictoryLegend } from "victory";
 import { css } from "@serendie/ui/css";
 import { token } from "@serendie/ui/tokens";
 import { SerendieChart } from "./components";
-import SerendieTheme from "../../VictoryTheme";
+import SerendieTheme from "./components/VictoryTheme";
 
 /**
  * VictoryBarLineChart - 棒グラフと線グラフを組み合わせたコンポーネント
@@ -138,7 +138,7 @@ export const VictoryBarLineChart: React.FC = () => {
             data: {
               stroke: tertiaryColor,
               strokeWidth: 3,
-              strokeDasharray: "2,2",
+              strokeDasharray: "3,1",
             },
           }}
         />

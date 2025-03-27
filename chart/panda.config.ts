@@ -18,7 +18,6 @@ export default defineConfig({
   outExtension: "js",
   jsxFramework: "react",
   presets: [SerendiePreset],
-
   // The output directory for your css system
   outdir: "styled-system",
 });

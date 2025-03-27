@@ -26,7 +26,7 @@ const SerendieTheme: VictoryThemeDefinition = {
         fontFamily: token("fonts.sd.reference.typography.fontFamily.primary"),
         fontSize: 12,
         padding: 30,
-        fill: token("colors.sd.system.color.component.onSurface"),
+        fill: token("colors.sd.system.color.component.onSurfaceVariant"),
       },
       grid: {
         fill: "none",
@@ -41,7 +41,7 @@ const SerendieTheme: VictoryThemeDefinition = {
         fontFamily: token("fonts.sd.reference.typography.fontFamily.primary"),
         fontSize: 12,
         padding: 10,
-        fill: token("colors.sd.system.color.component.onSurface"),
+        fill: token("colors.sd.system.color.component.onSurfaceVariant"),
       },
     },
   },
@@ -257,6 +257,7 @@ const SerendieTheme: VictoryThemeDefinition = {
       fontFamily: token("fonts.sd.reference.typography.fontFamily.primary"),
       fontSize: 12,
       fill: token("colors.sd.system.color.component.onSurface"),
+      fontWeight: "bold",
     },
     flyoutStyle: {
       stroke: token("colors.sd.system.color.component.outline"),

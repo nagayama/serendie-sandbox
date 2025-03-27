@@ -2,6 +2,7 @@ import VictoryBarChart from "./VictoryBarChart";
 import VictoryPieChart from "./VictoryPieChart";
 import VictoryBarLineChart from "./VictoryBarLineChart";
 import VictoryStackedBarLineChart from "./VictoryStackedBarLineChart";
+import { ThemeChanger } from "./components/ThemeChanger";
 
 /**
  * Victoryチャートコンポーネント
@@ -31,6 +32,9 @@ const VictorySample: React.FC = () => {
         gap: "2rem",
       }}
     >
+      <div>
+        <ThemeChanger />
+      </div>
       <div
         style={{
           display: "flex",

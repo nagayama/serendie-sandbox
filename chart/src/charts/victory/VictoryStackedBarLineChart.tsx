@@ -6,9 +6,11 @@ import {
   VictoryLegend,
   VictoryStack,
   VictoryScatter,
+  VictoryTooltip,
 } from "victory";
 import { css } from "@serendie/ui/css";
 import { SerendieChart } from "./components";
+import { token } from "@serendie/ui/tokens";
 
 /**
  * VictoryStackedBarLineChart - スタック棒グラフと線グラフを組み合わせた複雑なコンポーネント
@@ -58,36 +60,42 @@ export const VictoryStackedBarLineChart: React.FC = () => {
   const failureData = dates.map((date, i) => ({
     x: i + 1,
     y: 5 + Math.random() * 15,
+    label: `${5 + Math.random() * 15}%`,
   }));
 
   // 段取り・調整データ
   const setupData = dates.map((date, i) => ({
     x: i + 1,
     y: 10 + Math.random() * 10,
+    label: `${10 + Math.random() * 10}%`,
   }));
 
   // 立ち上がりデータ
   const startupData = dates.map((date, i) => ({
     x: i + 1,
     y: 5 + Math.random() * 5,
+    label: `${5 + Math.random() * 5}%`,
   }));
 
   // 速度低下データ
   const speedReductionData = dates.map((date, i) => ({
     x: i + 1,
     y: 15 + Math.random() * 10,
+    label: `${15 + Math.random() * 10}%`,
   }));
 
   // 不良手直しデータ
   const reworkData = dates.map((date, i) => ({
     x: i + 1,
     y: 10 + Math.random() * 15,
+    label: `${10 + Math.random() * 15}%`,
   }));
 
   // その他停止データ
   const otherStopData = dates.map((date, i) => ({
     x: i + 1,
     y: 5 + Math.random() * 15,
+    label: `${5 + Math.random() * 15}%`,
   }));
 
   // 設備総合効率（OEE）データ - 線グラフ用
@@ -107,7 +115,7 @@ export const VictoryStackedBarLineChart: React.FC = () => {
   });
 
   // 線グラフの色
-  const lineColor = "#0277BD"; // 濃い青
+  const lineColor = token("colors.sd.system.color.impression.primary");
 
   return (
     <div
@@ -147,7 +155,6 @@ export const VictoryStackedBarLineChart: React.FC = () => {
             tickLabels: {
               angle: -45,
               textAnchor: "end",
-              fontSize: 12,
             },
           }}
         />
@@ -162,17 +169,62 @@ export const VictoryStackedBarLineChart: React.FC = () => {
         {/* スタック棒グラフ */}
         <VictoryStack>
           {/* 故障 */}
-          <VictoryBar data={failureData} />
+          <VictoryBar
+            data={failureData}
+            labelComponent={<VictoryTooltip />}
+            barWidth={14}
+            style={{
+              data: {
+                stroke: "white",
+                strokeWidth: 1,
+              },
+            }}
+          />
           {/* 段取り・調整 */}
-          <VictoryBar data={setupData} />
+          <VictoryBar
+            data={setupData}
+            labelComponent={<VictoryTooltip />}
+            barWidth={14}
+            style={{
+              data: { stroke: "white", strokeWidth: 2 },
+            }}
+          />
           {/* 立ち上がり */}
-          <VictoryBar data={startupData} />
+          <VictoryBar
+            data={startupData}
+            labelComponent={<VictoryTooltip />}
+            barWidth={14}
+            style={{
+              data: { stroke: "white", strokeWidth: 2 },
+            }}
+          />
           {/* 速度低下 */}
-          <VictoryBar data={speedReductionData} />
+          <VictoryBar
+            data={speedReductionData}
+            labelComponent={<VictoryTooltip />}
+            barWidth={14}
+            style={{
+              data: { stroke: "white", strokeWidth: 2 },
+            }}
+          />
           {/* 不良手直し */}
-          <VictoryBar data={reworkData} />
+          <VictoryBar
+            data={reworkData}
+            labelComponent={<VictoryTooltip />}
+            barWidth={14}
+            style={{
+              data: { stroke: "white", strokeWidth: 2 },
+            }}
+          />
           {/* その他停止 */}
-          <VictoryBar data={otherStopData} />
+          <VictoryBar
+            data={otherStopData}
+            labelComponent={<VictoryTooltip />}
+            barWidth={14}
+            style={{
+              data: { stroke: "white", strokeWidth: 2 },
+            }}
+          />
         </VictoryStack>
 
         {/* 右Y軸 - 効率値 (0-10) */}
@@ -192,6 +244,7 @@ export const VictoryStackedBarLineChart: React.FC = () => {
           style={{
             data: {
               strokeWidth: 3,
+              stroke: lineColor,
             },
           }}
         />
@@ -199,6 +252,8 @@ export const VictoryStackedBarLineChart: React.FC = () => {
         {/* 線グラフのポイント */}
         <VictoryScatter
           data={oeeData}
+          labelComponent={<VictoryTooltip />}
+          labels={({ datum }) => `${datum.y * 10}%`}
           y={(d) => d.y * 10}
           size={5}
           style={{

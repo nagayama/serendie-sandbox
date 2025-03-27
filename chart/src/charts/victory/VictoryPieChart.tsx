@@ -2,7 +2,7 @@ import React from "react";
 import { VictoryPie, VictoryContainer } from "victory";
 import { css } from "@serendie/ui/css";
 import { token } from "@serendie/ui/tokens";
-import SerendieTheme from "../../VictoryTheme";
+import SerendieTheme from "./components/VictoryTheme";
 import ChartLegend, { LegendItem } from "../../components/ChartLegend";
 
 /**

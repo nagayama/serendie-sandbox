@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { VictoryChart, VictoryChartProps } from "victory";
-import SerendieTheme from "../../../VictoryTheme";
+import SerendieTheme from "./VictoryTheme";
 
 /**
  * SerendieChart - SerendieThemeを適用したVictoryChartラッパーコンポーネント
